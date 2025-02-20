@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>TJW 2024.2 - Cadastro de Disciplina</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap core CSS -->
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/webjars/open-iconic/font/css/open-iconic-bootstrap.min.css" rel="stylesheet" />
+    <link href="/css/style.css" rel="stylesheet" />
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-dark bg-dark fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">TJW 2024.2</a>
+                    <a th:href="@{/logout}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        Logout
+                    </a>
+                    <form id="logout-form" th:action="@{/logout}" method="POST" style="display: none;">
+                        <input type="hidden" name="_csrf" value="${_csrf.token}">
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="layout-main">
+        <aside>
+            <nav class="sidebar sidebar-open">
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><a class="nav-link" href="/"> <i class="oi oi-home"></i> <span>Home</span> </a></li>
+                </ul>
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><span class="nav-link active">Alunos</span></li>
+                    <li class="nav-item"><a class="nav-link" href="/alunos/cadastrar"><i class="oi oi-plus"></i><span>Cadastrar Aluno</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/alunos/listar"><i class="oi oi-spreadsheet"></i><span>Listar Alunos</span></a></li>
+                </ul>
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><span class="nav-link active">Disciplinas</span></li>
+                    <li class="nav-item"><a class="nav-link" href="/disciplinas/cadastrar"> <i class="oi oi-plus"></i> <span>Cadastrar</span> </a></li>
+                    <li class="nav-item"><a class="nav-link" href="/disciplinas/listar"> <i class="oi oi-spreadsheet"></i> <span>Listar</span> </a></li>
+                </ul>
+                <ul class="nav nav-pills">
+                    <li class="nav-item">
+                        <span class="nav-link active">Professores</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/professores/cadastrar">
+                            <i class="oi oi-plus"></i>
+                            <span>Cadastrar</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/professores/listar">
+                            <i class="oi oi-spreadsheet"></i>
+                            <span>Listar</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <section class="layout-content">
+            <div class="page-header">
+                <nav class="navbar navbar-expand-md navbar-light bg-light">
+                    <a class="btn btn-primary btn-md" href="/disciplinas/listar" role="button">
+                        <span class="oi oi-spreadsheet" title="Lista de Disciplinas" aria-hidden="true"></span>
+                        <span>Listar Disciplinas</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="container" id="form-cadastro">
+                <form th:action="*{id} == null ? @{/disciplinas/salvar} : @{/disciplinas/editar}" method="POST" th:object="${disciplina}">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="nome">Nome da Disciplina</label>
+                            <input type="text" class="form-control" id="nome" placeholder="Nome da Disciplina" th:field="*{nome}" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="codigo">Código</label>
+                            <input type="text" class="form-control" id="codigo" placeholder="Código da Disciplina" th:field="*{codigo}" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="nome">Ementa</label>
+                            <input type="text" class="form-control" id="ementa" placeholder="Ementa" th:field="*{ementa}" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="nome">Carga Horária</label>
+                            <input type="text" class="form-control" id="carga-horaria" placeholder="Carga Horária" th:field="*{cargaHoraria}" />
+                        </div>
+                    </div>
+                    <input type="hidden" th:if="${disciplina != null}" th:field="*{id}" />
+                    <button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+               

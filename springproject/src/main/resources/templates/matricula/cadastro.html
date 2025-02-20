@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>TJW 2024.2 - Cadastro de Matrícula</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+    <!-- Bootstrap core CSS -->
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/webjars/open-iconic/font/css/open-iconic-bootstrap.min.css" rel="stylesheet" />
+    <link href="/css/style.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-dark bg-dark fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="btn btn-dark navbar-toggler">
+                        <i class="oi oi-menu"></i>
+                    </button>
+                    <a class="navbar-brand" href="#">TJW 2024.2</a>
+                    <a th:href="@{/logout}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                    <form id="logout-form" th:action="@{/logout}" method="POST" style="display: none;">
+                        <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="layout-main">
+        <aside>
+            <nav class="sidebar sidebar-open">
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><a class="nav-link" href="/"> 
+                        <i class="oi oi-home"></i> <span>Home</span></a></li>
+                </ul>
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><span class="nav-link active">Matrículas</span></li>
+                    <li class="nav-item"><a class="nav-link" href="/matriculas/cadastrar">
+                        <i class="oi oi-plus"></i> <span>Cadastrar Matrícula</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/matriculas/listar">
+                        <i class="oi oi-spreadsheet"></i> <span>Listar Matrículas</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/matriculas/alunosmatriculados">
+                        <i class="oi oi-spreadsheet"></i> <span>Listar Alunos Matriculados</span></a></li>
+                </ul>
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><span class="nav-link active">Turmas</span></li>
+                    <li class="nav-item"><a class="nav-link" href="/turmas/cadastrar">
+                        <i class="oi oi-plus"></i><span>Cadastrar Turma</span>
+                    </a></li>
+                    <li class="nav-item"><a class="nav-link" href="/turmas/listar">
+                        <i class="oi oi-spreadsheet"></i><span>Listar Turmas</span>
+                    </a></li>
+                </ul>
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><span class="nav-link active">Semestres</span></li>
+                    <li class="nav-item"><a class="nav-link" href="/semestres/cadastrar"> <i class="oi oi-plus"></i> <span>Cadastrar</span> </a></li>
+                    <li class="nav-item"><a class="nav-link" href="/semestres/listar"> <i class="oi oi-spreadsheet"></i> <span>Listar</span> </a></li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <section class="layout-content">
+            <div class="page-header">
+                <nav class="navbar navbar-expand-md navbar-light bg-light">
+                    <a class="btn btn-primary btn-md" href="/matriculas/listar" role="button">
+                        <span class="oi oi-spreadsheet" title="Lista de Matrículas" aria-hidden="true"></span>
+                        <span>Listar Matrículas</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <div class="container" id="form-cadastro">
+                <form th:action="${matricula.id == null} ? @{/matriculas/salvar} : @{/matriculas/editar}" 
+                      method="POST" th:object="${matricula}">
+                    <div class="form-row">
+                        <!-- Seleção de Aluno -->
+                        <div class="form-group col-md-4">
+                            <label for="aluno">Aluno</label>
+                            <select class="form-control" id="aluno" th:field="*{aluno.id}">
+                                <option th:each="a : ${alunos}" th:value="${a.id}" th:text="${a.nome}"></option>
+                            </select>
+                        </div>
+                        <!-- Seleção de Turma -->
+                        <div class="form-group col-md-4">
+                            <label for="turma">Turma</label>
+                            <select class="form-control" id="turma" th:field="*{turma.id}">
+                                <option th:each="t : ${turmas}" th:value="${t.id}" 
+                                        th:text="${t.semestre.ano} + ' - ' + ${t.semestre.periodo} + ' | ' + ${t.disciplina.nome}"></option>
+                            </select>
+                        </div>
+                        <!-- Data da Matrícula -->
+                        <div class="form-group col-md-4">
+                            <label for="dataMatricula">Data da Matrícula</label>
+                            <input type="date" class="form-control" id="dataMatricula" th:field="*{dataMatricula}" />
+                        </div>
+                    </div>
+                    <input type="hidden" th:if="${matricula != null}" th:field="*{id}" />
+                    <button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+                </form>
+            </div>
+        </section>
+    </div>
+    
+    <footer class="layout-footer">
+        <div class="container"></div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/jquery-mask-plugin/dist/jquery.mask.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

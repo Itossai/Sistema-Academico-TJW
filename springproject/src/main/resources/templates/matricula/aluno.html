@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Relatório de Matrículas</title>
+  <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
+</head>
+<body>
+  <div class="container">
+    <h1 class="mt-4">Relatório de Matrículas</h1>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Turma</th>
+          <th>Disciplina</th>
+          <th>Professor</th>
+          <th>Semestre</th>
+          <th>Aluno</th>
+          <th>CPF</th>
+          <th>E-mail</th>
+          <th>Data Matrícula</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="matricula : ${matriculas}">
+          <!-- Dados da Turma -->
+          <td th:text="${matricula.turma.id}">ID Turma</td>
+          <td th:text="${matricula.turma.disciplina.nome}">Nome Disciplina</td>
+          <td th:text="${matricula.turma.professor.nome}">Nome Professor</td>
+          <td>
+            <span th:text="${matricula.turma.semestre.ano}">Ano</span> - 
+            <span th:text="${matricula.turma.semestre.periodo}">Período</span>
+          </td>
+          <!-- Dados do Aluno -->
+          <td th:text="${matricula.aluno.nome}">Nome Aluno</td>
+          <td th:text="${matricula.aluno.cpf}">CPF</td>
+          <td th:text="${matricula.aluno.email}">E-mail</td>
+          <!-- Data da Matrícula -->
+          <td th:text="${#temporals.format(matricula.dataMatricula, 'dd/MM/yyyy')}">Data Matrícula</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

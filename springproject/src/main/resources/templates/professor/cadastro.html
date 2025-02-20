@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>TJW 2024.2 - Cadastro de Professor</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap core CSS -->
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/webjars/open-iconic/font/css/open-iconic-bootstrap.min.css" rel="stylesheet" />
+    <link href="/css/style.css" rel="stylesheet" />
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-dark bg-dark fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">TJW 2024.2</a>
+                    <a th:href="@{/logout}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        Logout
+                    </a>
+                    <form id="logout-form" th:action="@{/logout}" method="POST" style="display: none;">
+                        <input type="hidden" name="_csrf" value="${_csrf.token}">
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="layout-main">
+        <aside>
+            <nav class="sidebar sidebar-open">
+                <ul class="nav nav-pills">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"> 
+                            <i class="oi oi-home"></i> 
+                            <span>Home</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><span class="nav-link active">Disciplinas</span></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/disciplinas/cadastrar">
+                            <i class="oi oi-plus"></i>
+                            <span>Cadastrar</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/disciplinas/listar">
+                            <i class="oi oi-spreadsheet"></i>
+                            <span>Listar</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><span class="nav-link active">Semestres</span></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/semestres/cadastrar">
+                            <i class="oi oi-plus"></i>
+                            <span>Cadastrar</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/semestres/listar">
+                            <i class="oi oi-spreadsheet"></i>
+                            <span>Listar</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><span class="nav-link active">Matriculas</span></li>
+                    <li class="nav-item"><a class="nav-link" href="/matriculas/cadastrar"><i class="oi oi-plus"></i><span>Cadastrar</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/matriculas/listar"><i class="oi oi-spreadsheet"></i><span>Listar</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/matriculas/alunosmatriculados"><i class="oi oi-spreadsheet"></i><span>Alunos Matriculados</span></a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <section class="layout-content">
+            <div class="page-header">
+                <nav class="navbar navbar-expand-md navbar-light bg-light">
+                    <a class="btn btn-primary btn-md" href="/professores/listar" role="button">
+                        <span class="oi oi-spreadsheet" title="Lista de Professores" aria-hidden="true"></span>
+                        <span>Listar Professores</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="container" id="form-cadastro">
+                <form th:action="*{id} == null ? @{/professores/salvar} : @{/professores/editar}" method="POST" th:object="${professor}">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="nome">Nome</label>
+                            <input type="text" class="form-control" id="nome" placeholder="Nome" th:field="*{nome}" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="cpf">Cpf</label>
+                            <!-- Se não houver um tipo 'cpf', utilize 'text' -->
+                            <input type="text" class="form-control" id="cpf" placeholder="Cpf" th:field="*{cpf}" />
+                        </div>
+                    </div>
+                    <input type="hidden" th:if="${professor != null}" th:field="*{id}" />
+                    <button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <footer class="layout-footer">
+        <div class="container"></div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/jquery-mask-plugin/dist/jquery.mask.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>
